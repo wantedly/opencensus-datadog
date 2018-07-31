@@ -12,6 +12,26 @@ module OpenCensus
 
         STATUS_DESCRIPTION_KEY = 'opencensus.status_description'.freeze
 
+        CANONICAL_CODES = [
+          'ok',
+          'cancelled',
+          'unknown',
+          'invalid_argument',
+          'deadline_exceeded',
+          'not_found',
+          'already_exists',
+          'permission_denied',
+          'resource_exhausted',
+          'failed_precondition',
+          'aborted',
+          'out_of_range',
+          'unimplemented',
+          'internal',
+          'unavailable',
+          'data_loss',
+          'unauthenticated'
+        ]
+
         def initialize(service)
           @service = service
         end
@@ -45,9 +65,12 @@ module OpenCensus
         def convert_status(dd_span, status)
           status_key = STATUS_DESCRIPTION_KEY
           return if status.nil?
-          if status.code >= 400 then
-            status_key = ::Datadog::Ext::Errors::MSG
+          if status.code != 0 then
+            status_key = Datadog::Ext::Errors::MSG
             dd_span[:error] = 1
+            code = status.code.to_i
+            return if code < 0 || code >= CANONICAL_CODES.length
+            dd_span[:meta][status_key] = CANONICAL_CODES[code]
           end
           dd_span[:meta][status_key] = status.message.to_s unless status.message.empty?
           return
