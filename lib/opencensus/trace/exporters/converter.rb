@@ -66,7 +66,7 @@ module OpenCensus
           status_key = STATUS_DESCRIPTION_KEY
           return if status.nil?
           if status.code != 0 then
-            status_key = Datadog::Ext::Errors::MSG
+            status_key = ::Datadog::Ext::Errors::MSG
             dd_span[:error] = 1
             code = status.code.to_i
             return if code < 0 || code >= CANONICAL_CODES.length
