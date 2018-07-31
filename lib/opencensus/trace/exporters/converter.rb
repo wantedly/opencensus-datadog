@@ -10,6 +10,10 @@ module OpenCensus
 
         DATADOG_MAX_TRACE_ID = 0xffff_ffff_ffff_ffff
 
+        DATADOG_SPAN_TYPE_KEY = 'span.type'.freeze
+        DATADOG_SERVICE_NAME_KEY = 'service.name'.freeze
+        DATADOG_RESOURCE_NAME_KEY = 'resource.name'.freeze
+
         STATUS_DESCRIPTION_KEY = 'opencensus.status_description'.freeze
 
         CANONICAL_CODES = [
@@ -57,7 +61,16 @@ module OpenCensus
           convert_status(dd_span, span.status)
 
           span.attributes.each do |k, v|
-            dd_span[:meta][k] = v.to_s
+            case k.to_s
+            when DATADOG_SPAN_TYPE_KEY
+              dd_span[:type] = v.to_s
+            when DATADOG_SERVICE_NAME_KEY
+              dd_span[:service] = v.to_s
+            when DATADOG_RESOURCE_NAME_KEY
+              dd_span[:resource] = v.to_s
+            else
+              dd_span[:meta][k] = v.to_s
+            end
           end
           dd_span
         end
