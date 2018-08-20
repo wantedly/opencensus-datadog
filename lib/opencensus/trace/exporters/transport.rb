@@ -1,3 +1,5 @@
+require 'net/http'
+
 module OpenCensus
   module Trace
     module Exporters
