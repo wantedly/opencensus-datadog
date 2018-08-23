@@ -13,6 +13,7 @@ module OpenCensus
         DATADOG_SPAN_TYPE_KEY = 'span.type'.freeze
         DATADOG_SERVICE_NAME_KEY = 'service.name'.freeze
         DATADOG_RESOURCE_NAME_KEY = 'resource.name'.freeze
+        DATADOG_SAMPLING_PRIORITY_KEY = ::Datadog::Ext::DistributedTracing::SAMPLING_PRIORITY_KEY
 
         STATUS_DESCRIPTION_KEY = 'opencensus.status_description'.freeze
 
@@ -56,22 +57,34 @@ module OpenCensus
             duration: ((span.end_time.to_f - span.start_time.to_f) * 1e9).to_i,
           }
 
-          dd_span[:metrics][::Datadog::Ext::DistributedTracing::SAMPLING_PRIORITY_KEY] = ::Datadog::Ext::Priority::AUTO_KEEP
+          dd_span[:metrics][DATADOG_SAMPLING_PRIORITY_KEY] = ::Datadog::Ext::Priority::AUTO_KEEP
 
           convert_status(dd_span, span.status)
 
           span.attributes.each do |k, v|
-            case k.to_s
-            when DATADOG_SPAN_TYPE_KEY
-              dd_span[:type] = v.to_s
-            when DATADOG_SERVICE_NAME_KEY
-              dd_span[:service] = v.to_s
-            when DATADOG_RESOURCE_NAME_KEY
-              dd_span[:resource] = v.to_s
+            case v
+            when Integer
+              if k == DATADOG_SAMPLING_PRIORITY_KEY
+                dd_span[:metrics][DATADOG_SAMPLING_PRIORITY_KEY] = v
+              else
+                dd_span[:metrics][k] = v
+              end
+            when ::OpenCensus::Trace::TruncatableString
+              case k
+              when DATADOG_SPAN_TYPE_KEY
+                dd_span[:type] = v.to_s
+              when DATADOG_SERVICE_NAME_KEY
+                dd_span[:service] = v.to_s
+              when DATADOG_RESOURCE_NAME_KEY
+                dd_span[:resource] = v.to_s
+              else
+                dd_span[:meta][k] = v.to_s
+              end
             else
               dd_span[:meta][k] = v.to_s
             end
           end
+
           dd_span
         end
 
