@@ -19,7 +19,7 @@ module OpenCensus
           @transport = Transport.new(agent_hostname, port)
 
           # worker parameters
-          @max_buffer_size = options.fetch(:buffer_size, 100)
+          @max_buffer_size = options.fetch(:buffer_size, 1000)
           @flush_interval = options.fetch(:flush_interval, 1)
 
           # traces metadata
