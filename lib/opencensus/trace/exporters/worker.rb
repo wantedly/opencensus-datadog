@@ -68,7 +68,7 @@ module OpenCensus
               return if !@run && @span_buffer.empty?
               @shutdown.wait(@mutex, @flush_interval) if @run
             end
-            p "[datadog-exporter] worker-#{Process.pid} finished a iteration #{Time.now - start}"
+            Datadog.log.error("[datadog-exporter] worker-#{Process.pid} finished a iteration #{Time.now - start}")
           end
         end
 
