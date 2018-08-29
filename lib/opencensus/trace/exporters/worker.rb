@@ -62,11 +62,13 @@ module OpenCensus
 
         def perform
           loop do
+            start = Time.now
             callback_spans
             @mutex.synchronize do
               return if !@run && @span_buffer.empty?
               @shutdown.wait(@mutex, @flush_interval) if @run
             end
+            Datadog.log.info("[datadog-exporter] worker-#{Process.pid} finished a iteration #{Time.now - start}")
           end
         end
 
