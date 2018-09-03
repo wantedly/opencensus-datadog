@@ -1,39 +1,49 @@
 # Ruby Datadog APM Exporter for OpenCensus
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/opencensus/datadog`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This library is the implementation of [OpenCensus](https://census-instrumentation/opencensus-ruby) exporter that transfer metrics to [Datadog APM](https://www.datadoghq.com/apm/).
+It is depending on Datadog Agent v6.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add `opencensus-datadog` to your application's Gemfile:
 
 ```ruby
 gem 'opencensus-datadog'
 ```
 
-And then execute:
+And install the gem using Bundler:
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install opencensus-datadog
+```shell
+$ bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Register this gem using OpenCensus configuration:
 
-## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+OpenCensus.configure do |c|
+  c.trace.exporter = OpenCensus::Trace::Integrations::Datadog.new
+end
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+You can also use the following code if using Ruby on Rails:
 
-## Contributing
+```ruby
+config.opencensus.trace.exporter = OpenCensus::Trace::Integrations::Datadog.new
+```
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/munisystem/opencensus-datadog.
+By default, this gem sends metrics to the Datadog Agent at `http://localhost:8126`. You can send to different host or port.
+
+```ruby
+OpenCensus.configure do |c|
+  c.trace.exporter = OpenCensus::Trace::Integrations::Datadog.new \
+    agent_hostname: '192.168.1.1',
+    agent_port: '1234'
+end
+```
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This project is releases under the [MIT License](https://opensource.org/licenses/MIT).
