@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Yuichi Saito"]
   spec.email         = ["munisystem@gmail.com"]
 
-  spec.summary       = ""
-  spec.description   = ""
+  spec.summary       = "Datadog APM exporter for OpenCensus"
+  spec.description   = "Datadog APM exporter for OpenCensus"
   spec.homepage      = "https://github.com/munisystem/opencensus-datadog"
   spec.license       = "MIT"
 
