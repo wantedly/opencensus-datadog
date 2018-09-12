@@ -1,4 +1,5 @@
 require 'logger'
+require 'opencensus'
 
 require 'opencensus/trace/exporters/datadog/transport'
 require 'opencensus/trace/exporters/datadog/worker'
@@ -13,8 +14,8 @@ module OpenCensus
 
         def self.log
           unless defined? @logger
-            @logger = Logger.new(STDOUT)
-            @logger.level = Logger::WARN
+            @logger = ::Logger.new(STDOUT)
+            @logger.level = ::Logger::WARN
           end
           @logger
         end

@@ -1,4 +1,3 @@
-require 'opencensus'
 require 'ddtrace/ext/distributed'
 require 'ddtrace/ext/priority'
 require 'ddtrace/ext/errors'
