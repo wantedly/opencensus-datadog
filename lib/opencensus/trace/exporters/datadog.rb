@@ -1,4 +1,5 @@
 require 'logger'
+require 'opencensus'
 
 require 'opencensus/trace/exporters/datadog/transport'
 require 'opencensus/trace/exporters/datadog/worker'
