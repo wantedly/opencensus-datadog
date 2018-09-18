@@ -1,4 +1,4 @@
-# Ruby Datadog APM Exporter for OpenCensus
+# Ruby Datadog APM Exporter for OpenCensus [![Build Status](https://travis-ci.org/munisystem/opencensus-datadog.svg?branch=master)](https://travis-ci.org/munisystem/opencensus-datadog)
 
 This library is the implementation of [OpenCensus](https://census-instrumentation/opencensus-ruby) exporter that transfer metrics to [Datadog APM](https://www.datadoghq.com/apm/).
 It is depending on Datadog Agent v6.
