@@ -1,5 +1,3 @@
-require 'ddtrace/version'
-
 require 'datadog/tracing/metadata/ext'
 require 'datadog/tracing/sampling/ext'
 
