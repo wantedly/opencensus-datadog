@@ -1,6 +1,5 @@
-require 'ddtrace/ext/distributed'
-require 'ddtrace/ext/priority'
-require 'ddtrace/ext/errors'
+require 'datadog/tracing/metadata/ext'
+require 'datadog/tracing/sampling/ext'
 
 module OpenCensus
   module Trace
@@ -13,7 +12,7 @@ module OpenCensus
           DATADOG_SPAN_TYPE_KEY = 'span.type'.freeze
           DATADOG_SERVICE_NAME_KEY = 'service.name'.freeze
           DATADOG_RESOURCE_NAME_KEY = 'resource.name'.freeze
-          DATADOG_SAMPLING_PRIORITY_KEY = ::Datadog::Ext::DistributedTracing::SAMPLING_PRIORITY_KEY
+          DATADOG_SAMPLING_PRIORITY_KEY = ::Datadog::Tracing::Metadata::Ext::Distributed::TAG_SAMPLING_PRIORITY
 
           STATUS_DESCRIPTION_KEY = 'opencensus.status_description'.freeze
 
@@ -57,7 +56,7 @@ module OpenCensus
               duration: ((span.end_time.to_f - span.start_time.to_f) * 1e9).to_i,
             }
 
-            dd_span[:metrics][DATADOG_SAMPLING_PRIORITY_KEY] = ::Datadog::Ext::Priority::AUTO_KEEP
+            dd_span[:metrics][DATADOG_SAMPLING_PRIORITY_KEY] = ::Datadog::Tracing::Sampling::Ext::Priority::AUTO_KEEP
 
             convert_status(dd_span, span.status)
 
@@ -92,7 +91,7 @@ module OpenCensus
             status_key = STATUS_DESCRIPTION_KEY
             return if status.nil?
             if status.code != 0 then
-              status_key = ::Datadog::Ext::Errors::MSG
+              status_key = ::Datadog::Tracing::Metadata::Ext::Errors::TAG_MSG
               dd_span[:error] = 1
               code = status.code.to_i
               return if code < 0 || code >= CANONICAL_CODES.length
