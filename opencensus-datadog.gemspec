@@ -6,12 +6,12 @@ require "opencensus/datadog/version"
 Gem::Specification.new do |spec|
   spec.name          = "opencensus-datadog"
   spec.version       = OpenCensus::Datadog::VERSION
-  spec.authors       = ["Yuichi Saito"]
-  spec.email         = ["munisystem@gmail.com"]
+  spec.authors       = ["Wantedly, Inc.", "Yuichi Saito"]
+  spec.email         = ["dev@wantedly.com", "munisystem@gmail.com"]
 
   spec.summary       = "Datadog APM exporter for OpenCensus"
   spec.description   = "Datadog APM exporter for OpenCensus"
-  spec.homepage      = "https://github.com/munisystem/opencensus-datadog"
+  spec.homepage      = "https://github.com/wantedly/opencensus-datadog"
   spec.license       = "MIT"
 
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
