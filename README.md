@@ -3,6 +3,11 @@
 This library is the implementation of [OpenCensus](https://github.com/census-instrumentation/opencensus-ruby) exporter that transfer metrics to [Datadog APM](https://www.datadoghq.com/apm/).
 It is depending on Datadog Agent v6.
 
+## Requirements
+
+- Ruby >= 3.2
+- `datadog` gem v2.x
+
 ## Installation
 
 Add `opencensus-datadog` to your application's Gemfile:
