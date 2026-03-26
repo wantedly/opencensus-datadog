@@ -52,7 +52,7 @@ module OpenCensus
               name: span.name.to_s,
               service: @service,
               resource: span.name.to_s,
-              type: span_type(span.kind.to_s),
+              type: span_type(span.kind),
               meta: {},
               metrics: {},
               error: 0,
@@ -108,13 +108,13 @@ module OpenCensus
             return
           end
 
-          # @param kind [String] string representation of OpenCensus::Trace::Span kind constant
+          # @param kind [Symbol] OpenCensus::Trace::Span kind constant
           # @return [String] Datadog span type ('server', 'client', or '')
           def span_type(kind)
-            case kind
-            when OpenCensus::Trace::Span::SERVER.to_s
+            case kind.to_sym
+            when OpenCensus::Trace::Span::SERVER
               'server'
-            when OpenCensus::Trace::Span::CLIENT.to_s
+            when OpenCensus::Trace::Span::CLIENT
               'client'
             else
               ''
