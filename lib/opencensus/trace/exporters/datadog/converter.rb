@@ -5,6 +5,7 @@ module OpenCensus
   module Trace
     module Exporters
       class Datadog
+        # Converts OpenCensus spans to Datadog APM format.
         class Converter
 
           DATADOG_MAX_TRACE_ID = 0xffff_ffff_ffff_ffff
@@ -36,10 +37,13 @@ module OpenCensus
             'unauthenticated'
           ]
 
+          # @param service [String] Datadog service name
           def initialize(service)
             @service = service
           end
 
+          # @param span [OpenCensus::Trace::Span] OpenCensus span
+          # @return [Hash] Datadog span hash
           def convert_span(span)
             dd_span = {
               span_id: span.span_id.to_i(16),
@@ -48,7 +52,7 @@ module OpenCensus
               name: span.name.to_s,
               service: @service,
               resource: span.name.to_s,
-              type: span_type(span.kind.to_s),
+              type: span_type(span.kind),
               meta: {},
               metrics: {},
               error: 0,
@@ -87,6 +91,9 @@ module OpenCensus
             dd_span
           end
 
+          # @param dd_span [Hash] Datadog span hash to modify
+          # @param status [OpenCensus::Trace::Status, nil] OpenCensus status
+          # @return [void]
           def convert_status(dd_span, status)
             status_key = STATUS_DESCRIPTION_KEY
             return if status.nil?
@@ -101,6 +108,8 @@ module OpenCensus
             return
           end
 
+          # @param kind [Symbol] OpenCensus::Trace::Span kind constant
+          # @return [String] Datadog span type ('server', 'client', or '')
           def span_type(kind)
             case kind
             when OpenCensus::Trace::Span::SERVER
